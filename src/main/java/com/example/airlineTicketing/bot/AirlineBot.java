@@ -1,12 +1,20 @@
 package com.example.airlineTicketing.bot;
 
+import com.example.airlineTicketing.enumFlight.FlightStatus;
+import jakarta.annotation.Resource;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class AirlineBot extends TelegramLongPollingBot
 {
+    @Resource
+    private FlightStatus flightStatus;
+
     public AirlineBot(String token)
     {
         super(token);
@@ -17,9 +25,21 @@ public class AirlineBot extends TelegramLongPollingBot
     {
         Message message = update.getMessage();
         long chatId = update.getMessage().getChatId();
-        if (message.getText().startsWith("hi"))
+        if (message.getText().startsWith("flight+"))
         {
-            sendMessage(chatId, "hi");
+            String[] params = message.getText().split(" ");
+            if (params.length >= 4)
+            {
+                String departureCity = params[1];
+                String destinationCity = params[2];
+                String dateString = params[3] + "T" + params[4];
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+                LocalDateTime departureDateTime = LocalDateTime.parse(dateString, formatter);
+                FlightStatus status = FlightStatus.OK;
+
+                sendMessage(chatId, "Рейс добавлен");
+            }
         }
     }
 
