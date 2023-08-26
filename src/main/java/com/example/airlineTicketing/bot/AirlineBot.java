@@ -35,8 +35,7 @@ public class AirlineBot extends TelegramLongPollingBot
             String destinationCity = params[2];
             String dateString = params[3];
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-            LocalDateTime departureDateTime = LocalDateTime.parse(dateString, formatter);
+            LocalDateTime departureDateTime = LocalDateTime.parse(dateString);
 
             FlightStatus status = FlightStatus.OK;
 
