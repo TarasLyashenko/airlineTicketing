@@ -1,6 +1,8 @@
 package com.example.airlineTicketing.bot;
 
+import com.example.airlineTicketing.entity.Flight;
 import com.example.airlineTicketing.enumFlight.FlightStatus;
+import com.example.airlineTicketing.service.FlightService;
 import jakarta.annotation.Resource;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -13,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 public class AirlineBot extends TelegramLongPollingBot
 {
     @Resource
-    private FlightStatus flightStatus;
+    private FlightService flightService;
 
     public AirlineBot(String token)
     {
@@ -28,18 +30,26 @@ public class AirlineBot extends TelegramLongPollingBot
         if (message.getText().startsWith("flight+"))
         {
             String[] params = message.getText().split(" ");
-            if (params.length >= 4)
-            {
-                String departureCity = params[1];
-                String destinationCity = params[2];
-                String dateString = params[3] + "T" + params[4];
 
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-                LocalDateTime departureDateTime = LocalDateTime.parse(dateString, formatter);
-                FlightStatus status = FlightStatus.OK;
+            String departureCity = params[1];
+            String destinationCity = params[2];
+            String dateString = params[3];
 
-                sendMessage(chatId, "Рейс добавлен");
-            }
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+            LocalDateTime departureDateTime = LocalDateTime.parse(dateString, formatter);
+
+            FlightStatus status = FlightStatus.OK;
+
+            Flight flight = new Flight();
+            flight.setDepartureCity(departureCity);
+            flight.setDestinationCity(destinationCity);
+            flight.setDepartureTime(departureDateTime);
+            flight.setStatus(status);
+
+            flightService.saveFlight(flight);
+
+            sendMessage(chatId, "Рейс добавлен");
+
         }
     }
 
