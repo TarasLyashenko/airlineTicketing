@@ -14,6 +14,7 @@ public class Flight
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String code;
     private String departureCity;
     private String destinationCity;
     private LocalDateTime departureTime;

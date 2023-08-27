@@ -1,12 +1,22 @@
 package com.example.airlineTicketing.bot;
 
+import com.example.airlineTicketing.entity.Flight;
+import com.example.airlineTicketing.enumFlight.FlightStatus;
+import com.example.airlineTicketing.service.FlightService;
+import jakarta.annotation.Resource;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class AirlineBot extends TelegramLongPollingBot
 {
+    @Resource
+    private FlightService flightService;
+
     public AirlineBot(String token)
     {
         super(token);
@@ -17,9 +27,28 @@ public class AirlineBot extends TelegramLongPollingBot
     {
         Message message = update.getMessage();
         long chatId = update.getMessage().getChatId();
-        if (message.getText().startsWith("hi"))
+        if (message.getText().startsWith("flight+"))
         {
-            sendMessage(chatId, "hi");
+            String[] params = message.getText().split(" ");
+
+            String departureCity = params[1];
+            String destinationCity = params[2];
+            String dateString = params[3];
+
+            LocalDateTime departureDateTime = LocalDateTime.parse(dateString);
+
+            FlightStatus status = FlightStatus.OK;
+
+            Flight flight = new Flight();
+            flight.setDepartureCity(departureCity);
+            flight.setDestinationCity(destinationCity);
+            flight.setDepartureTime(departureDateTime);
+            flight.setStatus(status);
+
+            flightService.saveFlight(flight);
+
+            sendMessage(chatId, "Рейс добавлен");
+
         }
     }
 
