@@ -10,6 +10,6 @@ public class Beans
     @Bean
     public AirlineBot createTelegramBot()
     {
-        return new AirlineBot("6507011061:AAFBkpZjHMRUiLJO0T05GRw26aHRZPPeU8Q");
+        return new AirlineBot("6507011061:AAGThmGCAXMYiYVWcM34uHDm-1OnzBZPWj4");
     }
 }

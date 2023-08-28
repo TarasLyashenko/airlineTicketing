@@ -10,7 +10,6 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class AirlineBot extends TelegramLongPollingBot
 {
@@ -49,6 +48,14 @@ public class AirlineBot extends TelegramLongPollingBot
 
             sendMessage(chatId, "Рейс добавлен");
 
+        }
+        else if (message.getText().startsWith("flights"))
+        {
+            sendMessage(chatId, flightService.seeAllFlight());
+        }
+        else
+        {
+            sendMessage(chatId, "Команда не распознана");
         }
     }
 
