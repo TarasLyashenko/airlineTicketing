@@ -30,7 +30,7 @@ public class FlightServiceImpl implements FlightService
     {
 
         StringBuilder responseBuilder = new StringBuilder();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy h:mm");
 
         Iterable<Flight> all = flightDao.findAll();
         for (Flight flight : all)
