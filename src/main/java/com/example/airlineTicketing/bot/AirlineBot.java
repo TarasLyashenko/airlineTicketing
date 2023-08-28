@@ -1,5 +1,6 @@
 package com.example.airlineTicketing.bot;
 
+import com.example.airlineTicketing.dao.FlightDao;
 import com.example.airlineTicketing.entity.Flight;
 import com.example.airlineTicketing.enumFlight.FlightStatus;
 import com.example.airlineTicketing.service.FlightService;
@@ -15,6 +16,8 @@ public class AirlineBot extends TelegramLongPollingBot
 {
     @Resource
     private FlightService flightService;
+    @Resource
+    private FlightDao flightDao;
 
     public AirlineBot(String token)
     {
@@ -49,9 +52,25 @@ public class AirlineBot extends TelegramLongPollingBot
             sendMessage(chatId, "Рейс добавлен");
 
         }
-        else if (message.getText().startsWith("flights"))
+        else if (message.getText().startsWith("/flights"))
         {
             sendMessage(chatId, flightService.seeAllFlight());
+        }
+        else if (message.getText().startsWith("flightTime"))
+        {
+            String[] params = message.getText().split(" ");
+
+            String flightCode = params[1];
+            String newDateTime = params[2];
+
+            Flight updatedFlight = flightDao.findByCode(flightCode);
+            LocalDateTime timeDepart = updatedFlight.getDepartureTime();
+            updatedFlight.setCode(flightCode);
+            updatedFlight.setDepartureTime(LocalDateTime.parse(newDateTime));
+            updatedFlight.setStatus(FlightStatus.DELAYED);
+            flightService.saveFlight(updatedFlight);
+
+            sendMessage(chatId, "Время рейса для кода " + flightCode + "было успешно изменено");
         }
         else
         {

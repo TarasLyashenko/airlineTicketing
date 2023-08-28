@@ -20,8 +20,11 @@ public class FlightServiceImpl implements FlightService
     @Override
     public void saveFlight(Flight flight)
     {
-        String codeFlight = generateRandomCode(6);
-        flight.setCode(codeFlight);
+        if (flight.getCode() == null)
+        {
+            String codeFlight = generateRandomCode(6);
+            flight.setCode(codeFlight);
+        }
         flightDao.save(flight);
     }
 
@@ -30,12 +33,12 @@ public class FlightServiceImpl implements FlightService
     {
 
         StringBuilder responseBuilder = new StringBuilder();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy h:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
 
         Iterable<Flight> all = flightDao.findAll();
         for (Flight flight : all)
         {
-            String code  = flight.getCode();
+            String code = flight.getCode();
             LocalDateTime departureTime = flight.getDepartureTime();
             String formattedDate = departureTime.format(formatter);
             String departureCity = flight.getDepartureCity();
