@@ -70,7 +70,19 @@ public class AirlineBot extends TelegramLongPollingBot
             updatedFlight.setStatus(FlightStatus.DELAYED);
             flightService.saveFlight(updatedFlight);
 
-            sendMessage(chatId, "Время рейса для кода " + flightCode + "было успешно изменено");
+            sendMessage(chatId, "Время рейса для кода " + flightCode + " было успешно изменено.");
+        }
+        else if (message.getText().startsWith("flight-"))
+        {
+            String[] params = message.getText().split(" ");
+
+            String flightCode = params[1];
+
+            Flight updatedFlight = flightDao.findByCode(flightCode);
+            updatedFlight.setStatus(FlightStatus.CANCELED);
+            flightService.saveFlight(updatedFlight);
+
+            sendMessage(chatId, "Рейс номер - " + flightCode + " отменен.");
         }
         else
         {
