@@ -55,6 +55,14 @@ public class FlightServiceImpl implements FlightService
         return responseBuilder.toString();
     }
 
+    @Override
+    public Flight findByCode(String code)
+    {
+        Flight byCode = flightDao.findByCode(code);
+        return byCode;
+
+    }
+
     private String generateRandomCode(int length)
     {
         return RandomStringUtils.randomAlphanumeric(length);
