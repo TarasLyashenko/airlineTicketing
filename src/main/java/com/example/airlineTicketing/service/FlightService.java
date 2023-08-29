@@ -7,4 +7,6 @@ public interface FlightService
     void saveFlight(Flight flight);
 
     String seeAllFlight();
+
+    Flight findByCode(String code);
 }

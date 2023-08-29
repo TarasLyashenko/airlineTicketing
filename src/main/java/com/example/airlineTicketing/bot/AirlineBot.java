@@ -57,6 +57,41 @@ public class AirlineBot extends TelegramLongPollingBot
         {
             sendMessage(chatId, "Команда не распознана");
         }
+        else if (message.getText().startsWith("/flights"))
+        {
+            sendMessage(chatId, flightService.seeAllFlight());
+        }
+        else if (message.getText().startsWith("flightTime"))
+        {
+            String[] params = message.getText().split(" ");
+
+            String flightCode = params[1];
+            String newDateTime = params[2];
+
+            Flight updatedFlight = flightService.findByCode(flightCode);
+            LocalDateTime timeDepart = updatedFlight.getDepartureTime();
+            updatedFlight.setDepartureTime(LocalDateTime.parse(newDateTime));
+            updatedFlight.setStatus(FlightStatus.DELAYED);
+            flightService.saveFlight(updatedFlight);
+
+            sendMessage(chatId, "Время рейса для кода " + flightCode + " было успешно изменено.");
+        }
+        else if (message.getText().startsWith("flight-"))
+        {
+            String[] params = message.getText().split(" ");
+
+            String flightCode = params[1];
+
+            Flight updatedFlight = flightService.findByCode(flightCode);
+            updatedFlight.setStatus(FlightStatus.CANCELED);
+            flightService.saveFlight(updatedFlight);
+
+            sendMessage(chatId, "Рейс номер - " + flightCode + " отменен.");
+        }
+        else
+        {
+            sendMessage(chatId, "Команда не распознана");
+        }
     }
 
     @Override
