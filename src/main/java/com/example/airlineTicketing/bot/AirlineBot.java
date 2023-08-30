@@ -1,7 +1,9 @@
 package com.example.airlineTicketing.bot;
 
+import com.example.airlineTicketing.entity.Customer;
 import com.example.airlineTicketing.entity.Flight;
 import com.example.airlineTicketing.enumFlight.FlightStatus;
+import com.example.airlineTicketing.service.CustomerService;
 import com.example.airlineTicketing.service.FlightService;
 import jakarta.annotation.Resource;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -15,6 +17,8 @@ public class AirlineBot extends TelegramLongPollingBot
 {
     @Resource
     private FlightService flightService;
+    @Resource
+    private CustomerService customerService;
 
     public AirlineBot(String token)
     {
@@ -49,14 +53,7 @@ public class AirlineBot extends TelegramLongPollingBot
             sendMessage(chatId, "Рейс добавлен");
 
         }
-        else if (message.getText().startsWith("flights"))
-        {
-            sendMessage(chatId, flightService.seeAllFlight());
-        }
-        else
-        {
-            sendMessage(chatId, "Команда не распознана");
-        }
+
         else if (message.getText().startsWith("/flights"))
         {
             sendMessage(chatId, flightService.seeAllFlight());
@@ -87,6 +84,33 @@ public class AirlineBot extends TelegramLongPollingBot
             flightService.saveFlight(updatedFlight);
 
             sendMessage(chatId, "Рейс номер - " + flightCode + " отменен.");
+        }
+        else if (message.getText().startsWith("customer+"))
+        {
+            String[] params = message.getText().split(" ");
+
+            String surname = params[1];
+            String name = params[2];
+            String patronymic = params[3];
+            String passport = params[4];
+            String phoneNumber = params[5];
+            String login = params[6];
+
+            Customer custumer = new Customer();
+            custumer.setName(name);
+            custumer.setSurname(surname);
+            custumer.setPatronymic(patronymic);
+            custumer.setPassport(passport);
+            custumer.setPhoneNumber(phoneNumber);
+            custumer.setLogin(login);
+
+            customerService.saveCustomer(custumer);
+
+            sendMessage(chatId, "Пользователь добавлен");
+        }
+        else if (message.getText().startsWith("/customers"))
+        {
+            sendMessage(chatId,customerService.seeAllCustomers());
         }
         else
         {
