@@ -53,10 +53,6 @@ public class AirlineBot extends TelegramLongPollingBot
         {
             sendMessage(chatId, flightService.seeAllFlight());
         }
-        else
-        {
-            sendMessage(chatId, "Команда не распознана");
-        }
         else if (message.getText().startsWith("/flights"))
         {
             sendMessage(chatId, flightService.seeAllFlight());
