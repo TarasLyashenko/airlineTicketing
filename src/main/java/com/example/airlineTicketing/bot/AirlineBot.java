@@ -2,9 +2,11 @@ package com.example.airlineTicketing.bot;
 
 import com.example.airlineTicketing.entity.Customer;
 import com.example.airlineTicketing.entity.Flight;
+import com.example.airlineTicketing.entity.Ticket;
 import com.example.airlineTicketing.enumFlight.FlightStatus;
 import com.example.airlineTicketing.service.CustomerService;
 import com.example.airlineTicketing.service.FlightService;
+import com.example.airlineTicketing.service.TicketService;
 import jakarta.annotation.Resource;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -19,6 +21,8 @@ public class AirlineBot extends TelegramLongPollingBot
     private FlightService flightService;
     @Resource
     private CustomerService customerService;
+    @Resource
+    private TicketService ticketService;
 
     public AirlineBot(String token)
     {
@@ -110,7 +114,25 @@ public class AirlineBot extends TelegramLongPollingBot
         }
         else if (message.getText().startsWith("/customers"))
         {
-            sendMessage(chatId,customerService.seeAllCustomers());
+            sendMessage(chatId, customerService.seeAllCustomers());
+        }
+        else if (message.getText().startsWith("ticket+"))
+        {
+
+            String[] params = message.getText().split(" ");
+
+            String customerLogin = params[1];
+            String flightCode = params[2];
+
+            Ticket ticket = new Ticket();
+            ticket.setCustomer(customerService.findByLogin(customerLogin));
+            Flight byCode = flightService.findByCode(flightCode);
+            ticket.setFlight(byCode);
+            ticket.setDepartureTime(byCode.getDepartureTime());
+
+            ticketService.saveTicket(ticket);
+
+            sendMessage(chatId, "Билет " + ticket.getCode() + " куплен!");
         }
         else
         {

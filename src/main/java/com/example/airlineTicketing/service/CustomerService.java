@@ -7,4 +7,6 @@ public interface CustomerService
     void saveCustomer(Customer customer);
 
     String seeAllCustomers();
+
+    Customer findByLogin(String login);
 }
