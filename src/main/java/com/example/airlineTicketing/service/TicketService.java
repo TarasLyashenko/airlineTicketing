@@ -5,4 +5,6 @@ import com.example.airlineTicketing.entity.Ticket;
 public interface TicketService
 {
     void saveTicket(Ticket ticket);
+
+    String seeAllTicket(String login);
 }
