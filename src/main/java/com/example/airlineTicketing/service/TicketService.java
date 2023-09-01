@@ -7,4 +7,6 @@ public interface TicketService
     void saveTicket(Ticket ticket);
 
     String seeAllTicket(String login);
+
+    String checkTicket(String code);
 }

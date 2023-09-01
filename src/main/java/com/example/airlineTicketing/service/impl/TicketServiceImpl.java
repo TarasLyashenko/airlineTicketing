@@ -53,6 +53,41 @@ public class TicketServiceImpl implements TicketService
         return responseBuilder.toString();
     }
 
+    @Override
+    public String checkTicket(String code)
+    {
+        StringBuilder responseBuilder = new StringBuilder();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
+        Ticket byCode = ticketDao.findByCode(code);
+        if (byCode == null)
+        {
+            String message = "Билета с таким кодом в системе нет";
+            responseBuilder.append(message);
+            return responseBuilder.toString();
+        }
+        else
+        {
+            String message = "Билет действителен. ";
+            String surname = byCode.getCustomer().getSurname();
+            String name = byCode.getCustomer().getName();
+            String patronymic = byCode.getCustomer().getPatronymic();
+            String departureCity = byCode.getFlight().getDepartureCity();
+            String destinationCity = byCode.getFlight().getDestinationCity();
+            LocalDateTime departureTime = byCode.getDepartureTime();
+            String formattedDate = departureTime.format(formatter);
+
+            responseBuilder.
+                    append(message).append(" ").
+                    append(surname).append(" ").
+                    append(name).append(" ").
+                    append(patronymic).append(" Из: ").
+                    append(departureCity).append(".  В: ").
+                    append(destinationCity).append("  Когда: ").
+                    append(formattedDate).append("\n");
+        }
+        return responseBuilder.toString();
+    }
+
     private String generateRandomCode(int length)
     {
         return RandomStringUtils.randomAlphanumeric(length);

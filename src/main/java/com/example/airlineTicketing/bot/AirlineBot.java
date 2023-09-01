@@ -142,6 +142,14 @@ public class AirlineBot extends TelegramLongPollingBot
             sendMessage(chatId, ticketService.seeAllTicket(code));
 
         }
+        else if (message.getText().startsWith("checkTicket"))
+        {
+            String[] params = message.getText().split(" ");
+            String code = params[1];
+
+            sendMessage(chatId, ticketService.checkTicket(code));
+
+        }
         else
         {
             sendMessage(chatId, "Команда не распознана");
