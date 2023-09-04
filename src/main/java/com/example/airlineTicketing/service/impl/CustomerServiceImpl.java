@@ -45,4 +45,10 @@ public class CustomerServiceImpl implements CustomerService
         }
         return responseBuilder.toString();
     }
+
+    @Override
+    public Customer findByLogin(String login)
+    {
+        return customerDao.findByLogin(login);
+    }
 }
