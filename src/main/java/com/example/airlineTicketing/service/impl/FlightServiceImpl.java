@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -68,16 +67,9 @@ public class FlightServiceImpl implements FlightService
     @Override
     public List<Flight> seeAllExceptFlew()
     {
-        ArrayList<Flight> flights = new ArrayList<>();
-        for (Flight flight : flightDao.findFlightNoFlew())
-        {
-            if (flight.getStatus() == FlightStatus.FLEW)
-            {
-                flights.add(flight);
-            }
-        }
-        return flights;
+        return flightDao.findFlightNoFlew();
     }
+
 
     private String generateRandomCode(int length)
     {
