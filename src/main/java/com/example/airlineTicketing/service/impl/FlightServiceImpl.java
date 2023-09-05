@@ -68,16 +68,15 @@ public class FlightServiceImpl implements FlightService
     @Override
     public List<Flight> seeAllExceptFlew()
     {
-        Iterable<Flight> iterable = flightDao.findAll();
         ArrayList<Flight> flights = new ArrayList<>();
-
-        for (Flight flight : iterable)
+        for (Flight flight : flightDao.findFlightNoFlew())
         {
-            flights.add(flight);
+            if (flight.getStatus() == FlightStatus.FLEW)
+            {
+                flights.add(flight);
+            }
         }
-
-        return flights.stream()
-                .filter(flight -> flight.getStatus() != FlightStatus.FLEW).toList();
+        return flights;
     }
 
     private String generateRandomCode(int length)

@@ -1,7 +1,6 @@
 package com.example.airlineTicketing;
 
 import com.example.airlineTicketing.bot.AirlineBot;
-import com.example.airlineTicketing.dao.FlightDao;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import org.springframework.boot.CommandLineRunner;
@@ -14,8 +13,6 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 @SpringBootApplication
 public class AirlineTicketingApplication implements CommandLineRunner
 {
-    @Resource
-    private FlightDao flightDao;
     @Resource
     private AirlineBot airlineBot;
 
