@@ -4,6 +4,7 @@ import com.example.airlineTicketing.entity.Customer;
 import com.example.airlineTicketing.entity.Flight;
 import com.example.airlineTicketing.entity.Ticket;
 import com.example.airlineTicketing.enumFlight.FlightStatus;
+import com.example.airlineTicketing.scheduler.Scheduler;
 import com.example.airlineTicketing.service.CustomerService;
 import com.example.airlineTicketing.service.FlightService;
 import com.example.airlineTicketing.service.TicketService;
