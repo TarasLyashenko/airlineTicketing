@@ -12,5 +12,5 @@ public interface FlightService
 
     Flight findByCode(String code);
 
-    List<Flight> seeAll();
+    List<Flight> seeAllExceptFlew();
 }
