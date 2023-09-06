@@ -9,4 +9,6 @@ public interface TicketService
     String seeAllTicket(String login);
 
     String checkTicket(String code);
+
+    void findTicketByFlight(String flightCode);
 }

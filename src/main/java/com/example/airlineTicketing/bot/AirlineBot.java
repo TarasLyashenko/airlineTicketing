@@ -87,7 +87,7 @@ public class AirlineBot extends TelegramLongPollingBot
             Flight updatedFlight = flightService.findByCode(flightCode);
             updatedFlight.setStatus(FlightStatus.CANCELED);
             flightService.saveFlight(updatedFlight);
-
+            ticketService.findTicketByFlight(updatedFlight.getCode());
             sendMessage(chatId, "Рейс номер - " + flightCode + " отменен.");
         }
         else if (message.getText().startsWith("customer+"))

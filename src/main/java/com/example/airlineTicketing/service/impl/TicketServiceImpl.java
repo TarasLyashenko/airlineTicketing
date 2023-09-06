@@ -88,6 +88,18 @@ public class TicketServiceImpl implements TicketService
         return responseBuilder.toString();
     }
 
+    @Override
+    public void findTicketByFlight(String flightCode)
+    {
+        List<Ticket> ticketByFlight = ticketDao.findTicketByFlight(flightCode);
+        for (Ticket ticket : ticketByFlight)
+        {
+            System.out.println("Уважаемый, " + ticket.getCustomer().getName() +
+                    " , к сожалению ваш рейс " + ticket.getFlight().getCode() +
+                    "  был отменен");
+        }
+    }
+
     private String generateRandomCode(int length)
     {
         return RandomStringUtils.randomAlphanumeric(length);

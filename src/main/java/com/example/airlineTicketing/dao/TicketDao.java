@@ -14,4 +14,7 @@ public interface TicketDao extends CrudRepository<Ticket, Long>
     List<Ticket> findTicketByLogin(String login);
 
     Ticket findByCode(String code);
+
+    @Query("SELECT t FROM Ticket t WHERE t.flight.code = :flightCode")
+    List<Ticket> findTicketByFlight(String flightCode);
 }
