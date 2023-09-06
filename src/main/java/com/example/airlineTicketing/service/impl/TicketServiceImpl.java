@@ -94,7 +94,7 @@ public class TicketServiceImpl implements TicketService
         List<Ticket> ticketByFlight = ticketDao.findTicketByFlight(flightCode);
         for (Ticket ticket : ticketByFlight)
         {
-            System.out.println("Уважаемый, " + ticket.getCustomer().getName() +
+            System.out.println("Уважаемый(ая), " + ticket.getCustomer().getName() +
                     " , к сожалению ваш рейс " + ticket.getFlight().getCode() +
                     "  был отменен");
         }
